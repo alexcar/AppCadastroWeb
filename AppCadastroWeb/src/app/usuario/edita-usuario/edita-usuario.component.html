@@ -1,0 +1,116 @@
+
+<div class="card">
+    <div class="card-header">
+        App Cadastro
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{title}}</h5>        
+        <div class="edita-usuario">            
+            <p *ngIf="this.id && !usuario"><em>Carregando...</em></p>
+            <div class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <br />
+                    <input type="text" style="width: 500px;" id="nome" formControlName="nome" required
+                        class="form-control" />
+                    
+                    <div *ngIf="form.get('nome').invalid &&
+                        (form.get('nome').dirty || form.get('nome').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="form.get('nome').errors?.required">Um nome é obrigatório</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <br />
+                    <input type="text" style="width: 500px;" id="email" formControlName="email" required class="form-control" />
+
+                    <div *ngIf="form.get('email').invalid &&
+                        (form.get('email').dirty || form.get('email').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="form.get('email').errors?.required">Um Email é obrigatório</div>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label for="nome">Data Nascimento:</label>
+                    <br />
+                    <input type="date" style="width: 200px;" id="dataNascimento" formControlName="dataNascimento" required class="form-control" />
+
+                    <div *ngIf="form.get('dataNascimento').invalid &&
+                        (form.get('dataNascimento').dirty || form.get('dataNascimento').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="form.get('dataNascimento').errors?.required">Uma data de nascimento é obrigatório</div>
+                    </div>
+                </div>       
+                
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <br />
+                    <input type="text" style="width: 150px;" id="senha" formControlName="senha" required  class="form-control" />
+
+                    <div *ngIf="form.get('senha').invalid &&
+                        (form.get('senha').dirty || form.get('senha').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="form.get('senha').errors?.required">Uma Senha é obrigatório</div>
+                    </div>
+                </div>
+        
+                <div [hidden]="!id" class="form-group">
+                    <label for="ativo">Status:</label>
+                    <br />                    
+                    <select id="ativo" style="width: 150px;" class="form-control" formControlName="ativo">
+                        <option *ngFor="let status of tiposStatus" [value]="status.statusId">
+                            {{ status.descricao }}
+                        </option>
+                    </select> 
+
+                    <div *ngIf="form.get('ativo').invalid &&
+                        (form.get('ativo').dirty || form.get('ativo').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="form.get('ativo').errors?.required">Selecione um Status</div>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <label for="sexoId">Sexo:</label>
+                    <br />
+                    <select id="sexoId" style="width: 150px;" class="form-control" formControlName="sexoId">
+                        <option [hidden]="id" value="">--- Selecione ---</option>
+                        <option *ngFor="let sexo of sexos" [value]="sexo.sexoId">
+                            {{ sexo.descricao }}
+                        </option>
+                    </select>
+
+                    <div *ngIf="form.get('sexoId').invalid &&
+                        (form.get('sexoId').dirty || form.get('sexoId').touched)"
+                        class="invalid-feedback">
+                        <div *ngIf="form.get('sexoId').errors?.required">Selecione um Sexo</div>
+                    </div>
+                </div>        
+        
+                <div class="form-group commands">
+                    <button *ngIf="id" type="submit" style="margin-right: 10px;"
+                        (click)="onSubmit()" 
+                        [disabled]="form.invalid"
+                        class="btn btn-success">                        
+                        Salvar
+                    </button>
+                    <button *ngIf="!id" type="submit" style="margin-right: 10px;"
+                        (click)="onSubmit()"
+                        [disabled]="form.invalid"
+                        class="btn btn-success">
+                        Inserir
+                    </button>
+                    <button type="submit" [routerLink]="['/usuarios']" class="btn btn-default">
+                        Cancelar
+                    </button>                    
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+

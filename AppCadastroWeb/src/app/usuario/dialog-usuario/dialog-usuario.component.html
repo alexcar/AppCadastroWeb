@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Exclusão</h2>
+
+<mat-dialog-content>
+    <p> Deseja excluir o usuário:</p>
+    <p>{{ data }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button style="margin-right:  10px;" mat-button (click)="excluir()" cdkFocusInitial>OK</button>
+    <button mat-buttton (click)="cancelar()">Cancelar</button>    
+</mat-dialog-actions>
