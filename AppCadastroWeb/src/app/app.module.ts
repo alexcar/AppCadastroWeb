@@ -19,6 +19,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { DialogUsuarioComponent } from './usuario/dialog-usuario/dialog-usuario.component';
 import { EditaUsuarioComponent } from './usuario/edita-usuario/edita-usuario.component';
+import { FiltroService } from './usuario/filtro.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { EditaUsuarioComponent } from './usuario/edita-usuario/edita-usuario.com
     MatSnackBarModule,
     MatSelectModule
   ],
-  providers: [],
+  providers: [FiltroService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

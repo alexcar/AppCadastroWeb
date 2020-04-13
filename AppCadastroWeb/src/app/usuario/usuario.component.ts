@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Usuario } from './usuario';
 import { Filtro } from './filtro';
+import { FiltroService } from './filtro.service';
 
 @Component({
   selector: 'app-usuario',
@@ -20,19 +21,18 @@ export class UsuarioComponent implements OnInit {
 
   filtroNome: '';
   filtroStatus: string;
-  // filtro: Filtro;
   filtro = new Filtro();
 
   tiposStatus = [
     {
-      statusId: 2,
+      statusId: '2',
       descricao: 'Todos'
     },
     {
-    statusId: 1,
+    statusId: '1',
     descricao: 'Ativo'
     }, {
-      statusId: 0,
+      statusId: '0',
       descricao: 'Inativo'
     }
   ];
@@ -40,11 +40,19 @@ export class UsuarioComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private matDialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private filtroService: FiltroService
   ) { }
 
   ngOnInit(): void {
-    this.getData();
+    this.filtroService.filtro
+      .subscribe(filtro => this.filtro = filtro);
+
+    if (this.filtro.nome) {
+      this.filtrar();
+    } else {
+      this.getData();
+    }
   }
 
   openDialog(nome: string, id: number): void {
@@ -75,7 +83,13 @@ export class UsuarioComponent implements OnInit {
     this.http.delete(url)
       .subscribe(result => {
         this.openSnakBar();
-        this.getData();
+
+        if (this.filtro.nome) {
+          this.filtrar();
+        } else {
+          this.getData();
+        }
+
       }, error => console.log(error));
   }
 
@@ -87,14 +101,23 @@ export class UsuarioComponent implements OnInit {
 
   filtrar() {
     const url = 'https://localhost:44391/api/usuario/search';
-    this.filtro.nome = this.filtroNome;
 
-    if (this.filtroStatus == '0') {
-      this.filtro.ativo = false;
-    } else if (this.filtroStatus == '1') {
-      this.filtro.ativo = true;
+    if (this.filtroStatus != undefined) {
+      if (this.filtroStatus == '0') {
+        this.filtro.ativo = false;
+      } else if (this.filtroStatus == '1') {
+        this.filtro.ativo = true;
+      } else {
+        this.filtro.ativo = null;
+      }
     } else {
-      this.filtro.ativo = null;
+      if (this.filtro.ativo == null) {
+        this.filtroStatus = '2';
+      } else if (this.filtro.ativo) {
+        this.filtroStatus = '1';
+      } else {
+        this.filtroStatus = '0';
+      }
     }
 
     this.http.post<any>(url, this.filtro)

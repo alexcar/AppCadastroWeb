@@ -51,20 +51,16 @@ export class EditaUsuarioComponent implements OnInit {
 
   loadData() {
     this.loadSexos();
-
-    // retrieve the ID from the 'id' parameter
     this.id = +this.actovatedRoute.snapshot.paramMap.get('id');
 
     if (this.id) {
       // modo edição
-      // fetch the usuario from the server
       const url = 'https://localhost:44391/api/usuario/' + this.id;
       this.http.get<Usuario>(url)
         .subscribe(result => {
           this.usuario = result;
           this.title = 'Editar - ' + this.usuario.nome;
 
-          // update the form with the usuario valur
           this.form.patchValue(this.usuario);
         }, error => console.error(error));
     } else {
@@ -94,7 +90,6 @@ export class EditaUsuarioComponent implements OnInit {
     if (this.id) {
       // modo edição
       const url = 'https://localhost:44391/api/usuario/' + this.usuario.usuarioId;
-      console.log(usuario);
       this.http
         .put<Usuario>(url, usuario)
           .subscribe(result => {
